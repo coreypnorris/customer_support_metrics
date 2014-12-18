@@ -1,0 +1,3 @@
+helpscout_webhook/.env
+helpscout_webhook/logger
+helpscout_webhook/spec/cassettes
