@@ -2,6 +2,7 @@ require 'sinatra'
 require 'vcr'
 require 'rack/test'
 require 'webmock/rspec'
+require 'pry'
 
 require ::File.join(::File.dirname(::File.expand_path(__FILE__)), '..', 'app', 'webhook.rb')
 require ::File.join(::File.dirname(::File.expand_path(__FILE__)), '..', 'app', 'sqs.rb')

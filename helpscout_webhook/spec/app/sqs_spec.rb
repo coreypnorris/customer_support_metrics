@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'json'
 
 RSpec.describe Sqs, :vcr => true do
   let(:sqs) { Sqs.new }
@@ -59,5 +58,4 @@ RSpec.describe Sqs, :vcr => true do
       expect(sqs.region).to eq ENV['AWS_REGION']
     end
   end
-
 end

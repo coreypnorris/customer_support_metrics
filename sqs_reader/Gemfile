@@ -5,7 +5,6 @@ gem 'sinatra'
 gem 'pry'
 gem 'dotenv'
 gem 'aws-sdk', '< 2'
-gem 'ruby-hmac'
 gem 'activesupport'
 
 group :test do

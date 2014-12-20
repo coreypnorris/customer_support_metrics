@@ -10,8 +10,6 @@ require 'net/http'
 require 'logger'
 require 'aws-sdk'
 
-require ::File.join(::File.dirname(::File.expand_path(__FILE__)), '..', 'app', 'sqs.rb')
-
 Dotenv.load
 
 class Webhook < Sinatra::Base
@@ -60,11 +58,11 @@ class Webhook < Sinatra::Base
         return 401
       end
     rescue => e
-      puts '------------------------------------------------------------------------------------------rescuing method'
+      puts '------------------------------------------------------------------------------------------rescuing POST to webhook'
       puts "Exception at #{Time.now}"
       puts e
       puts e.backtrace
-      puts '------------------------------------------------------------------------------------------rescued method'
+      puts '------------------------------------------------------------------------------------------rescued POST to webhook'
     end
   end
 end
