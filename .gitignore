@@ -1,7 +1,2 @@
 helpscout_webhook/.env
-helpscout_webhook/logger
-helpscout_webhook/spec/cassettes
-
 sqs_reader/.env
-sqs_reader/logger
-sqs_reader/spec/cassettes
