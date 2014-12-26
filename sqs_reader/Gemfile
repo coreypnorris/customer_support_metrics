@@ -4,6 +4,13 @@ gem 'rack'
 gem 'sinatra'
 gem 'pry'
 gem 'dotenv'
-gem 'aws-sdk'
+gem 'aws-sdk', '< 2'
+gem 'aws-sdk-core'
 gem 'activesupport'
 gem 'logger'
+
+group :test do
+  gem 'rspec'
+  gem 'rack-test'
+  gem 'webmock'
+end

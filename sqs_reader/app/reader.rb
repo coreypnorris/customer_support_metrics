@@ -7,7 +7,6 @@ require 'dotenv'
 Dotenv.load
 
 Dir[File.dirname(__FILE__) + '/*.rb'].each {|file| require file }
-require File.dirname(__FILE__) + '/../../helpscout_webhook/app/sqs.rb'
 
 class Reader < Sinatra::Base
   Logger.class_eval { alias :write :'<<' }
@@ -60,7 +59,6 @@ class Reader < Sinatra::Base
         insert_data(helpscout_data_table, msg.body)
         puts "#{msg.body} has been read from #{helpscout_data_queue.url} and inserted into Dynamodb #{helpscout_data_table.name} at #{Time.now}"
       end
-
     rescue => e
       puts '------------------------------------------------------------------------------------------rescuing helpscout_queue_reader'
       puts "Exception at #{Time.now}"
