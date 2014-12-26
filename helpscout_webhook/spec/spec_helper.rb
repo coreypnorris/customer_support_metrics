@@ -1,16 +1,15 @@
 require 'sinatra'
-require 'vcr'
 require 'rack/test'
 require 'webmock/rspec'
-require 'pry'
 
-require ::File.join(::File.dirname(::File.expand_path(__FILE__)), '..', 'app', 'webhook.rb')
-require ::File.join(::File.dirname(::File.expand_path(__FILE__)), '..', 'app', 'sqs.rb')
-require ::File.join(::File.dirname(::File.expand_path(__FILE__)), '..', 'config', 'environment.rb')
+Dir[File.dirname(__FILE__) + '/../app/*.rb'].each {|file| require file }
+Dir[File.dirname(__FILE__) + '/../config/environment.rb'].each {|file| require file }
 
 ENV['RACK_ENV'] = 'test'
 
 RSpec.configure do |config|
+  WebMock.disable_net_connect!(allow_localhost: true)
+
   config.include Rack::Test::Methods
 
   config.expect_with :rspec do |expectations|
@@ -37,15 +36,6 @@ RSpec.configure do |config|
   config.order = :random
 
   Kernel.srand config.seed
-end
 
-VCR.configure do |c|
-  c.cassette_library_dir = 'spec/cassettes'
-  c.hook_into :webmock
-  c.configure_rspec_metadata!
-  c.allow_http_connections_when_no_cassette = true
-  c.filter_sensitive_data('<access_key_id>') { ENV['AWS_ACCESS_KEY_ID'] }
-  c.filter_sensitive_data('<secret_access_key>') { ENV['AWS_SECRET_ACCESS_KEY'] }
-  c.filter_sensitive_data('<region>') { ENV['AWS_REGION'] }
-  c.filter_sensitive_data('<region>') { ENV['AWS_ACCOUNT_NUMBER'] }
+  AWS.config(:sqs_endpoint => 'localhost', :sqs_port => 9324, :use_ssl => false)
 end

@@ -47,8 +47,6 @@ GEM
       rspec-support (~> 3.1.0)
     rspec-support (3.1.2)
     ruby-hmac (0.4.0)
-    rufus-scheduler (3.0.9)
-      tzinfo
     safe_yaml (1.0.4)
     sinatra (1.4.5)
       rack (~> 1.4)
@@ -59,7 +57,6 @@ GEM
     tilt (1.4.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    vcr (2.9.3)
     webmock (1.20.4)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
@@ -76,7 +73,5 @@ DEPENDENCIES
   rack-test
   rspec
   ruby-hmac
-  rufus-scheduler
   sinatra
-  vcr
   webmock
