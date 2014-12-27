@@ -18,45 +18,42 @@ class Reader < Sinatra::Base
     use ::Rack::CommonLogger, access_logger
   end
 
-  helpers do
-    def get_largest_id_from_table(table)
-      if table.items.count == 0
-        item_ids = [0]
-      else
-        item_ids = []
-        table.items.each { |item| item_ids << item.hash_value.to_i }
-        item_ids.sort!.reverse!
-      end
+  def self.insert_message_into_helpscout_table(message)
+    dynamo_db = AWS::DynamoDB::Client::V20120810.new
 
-      item_ids.first
+    unless dynamo_db.list_tables[:table_names].include? 'helpscout_data'
+      dynamo_db.create_table(
+        table_name: "helpscout_data",
+        attribute_definitions: [
+          {attribute_name: "id", attribute_type: "S"},
+          {attribute_name: "data", attribute_type: "S"}
+        ],
+        key_schema: [
+          {attribute_name: "id", key_type: "HASH"},
+          {attribute_name: "data", key_type: "RANGE"}
+        ],
+        provisioned_throughput: {
+          read_capacity_units: 10,
+          write_capacity_units: 10})
     end
 
-    def insert_data(table, data)
-      id = (get_largest_id_from_table(table) + 1)
-      table.items.create('id' => id, 'data' => data)
-    end
+    dynamo_db.put_item(:table_name => "helpscout_data", :item => {"id" => { "S" => SecureRandom.uuid }, "data" => { "S" => message }})
+  end
+
+  def self.create_helpscout_queue(configured_aws)
+    configured_aws.sqs_client.create_queue(:queue_name => 'helpscout_data')
+
+    sqs = AWS::SQS.new
+    sqs.queues.named('helpscout_data')
   end
 
   get '/helpscout_queue_reader' do
     begin
       configured_aws = AWS.config(access_key_id: ENV['AWS_ACCESS_KEY_ID'], secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'], region: ENV['AWS_REGION'])
-      configured_aws.sqs_client.create_queue(:queue_name => 'helpscout_data')
-
-      sqs = AWS::SQS.new
-      helpscout_data_queue = sqs.queues.named('helpscout_data')
-
-      dynamo_db = AWS::DynamoDB.new
+      helpscout_data_queue = Reader.create_helpscout_queue(configured_aws)
 
       helpscout_data_queue.poll do |msg|
-        unless dynamo_db.tables['helpscout_data'].exists?
-          helpscout_data_table = dynamo_db.tables.create('helpscout_data', 10, 5, :hash_key => { :id => :number })
-          sleep 1 while helpscout_data_table.status == :creating
-        else
-          helpscout_data_table = dynamo_db.tables['helpscout_data']
-        end
-
-        helpscout_data_table.load_schema
-        insert_data(helpscout_data_table, msg.body)
+        Reader.insert_message_into_helpscout_table(dynamo_db, msg.body)
         puts "#{msg.body} has been read from #{helpscout_data_queue.url} and inserted into Dynamodb #{helpscout_data_table.name} at #{Time.now}"
       end
     rescue => e
