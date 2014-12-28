@@ -36,7 +36,7 @@ class Reader < Sinatra::Base
           read_capacity_units: 10,
           write_capacity_units: 10})
     end
-
+    
     dynamo_db.put_item(:table_name => "helpscout_data", :item => {"id" => { "S" => SecureRandom.uuid }, "data" => { "S" => message }})
   end
 
@@ -53,8 +53,8 @@ class Reader < Sinatra::Base
       helpscout_data_queue = Reader.create_helpscout_queue(configured_aws)
 
       helpscout_data_queue.poll do |msg|
-        Reader.insert_message_into_helpscout_table(dynamo_db, msg.body)
-        puts "#{msg.body} has been read from #{helpscout_data_queue.url} and inserted into Dynamodb #{helpscout_data_table.name} at #{Time.now}"
+        Reader.insert_message_into_helpscout_table(msg.body)
+        puts "#{msg.body} has been read from #{helpscout_data_queue.url} and inserted into helpscout_data DynamoDB table at #{Time.now}"
       end
     rescue => e
       puts '------------------------------------------------------------------------------------------rescuing helpscout_queue_reader'
