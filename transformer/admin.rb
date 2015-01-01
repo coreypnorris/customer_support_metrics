@@ -52,8 +52,6 @@ class Admin < Sinatra::Base
       end
 
       current_page += 1
-
-      binding.pry
     rescue => e
       puts "------------------------------------------------------------------------------------------rescuing get_conversation_ids(#{mailbox_id})"
       puts "Exception at #{Time.now}"
