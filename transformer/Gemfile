@@ -1,0 +1,20 @@
+source 'https://rubygems.org'
+
+gem 'sinatra'
+gem 'rack'
+gem 'activerecord'
+gem 'active_record_migrations'
+gem 'activesupport'
+gem 'dotenv'
+gem 'aws-sdk', '< 2'
+gem 'pg'
+gem 'pry'
+gem 'httparty'
+gem 'rufus-scheduler'
+
+group :test do
+  gem 'rspec'
+  gem 'rack-test'
+  gem 'webmock'
+  gem 'shoulda-matchers', require: false
+end
