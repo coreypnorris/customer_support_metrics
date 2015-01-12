@@ -1,0 +1,40 @@
+// ----------------------------------------------------------------------------
+// Sass declarations
+// ----------------------------------------------------------------------------
+$background-color:  #000000;
+$value-color:       #FFFFFF;
+$change-rate-color: #66FF33;
+$icon-arrow-down-color: #FF0517;
+
+$title-color:       #FFFFFF;
+$moreinfo-color:    #66FF33;
+
+// ----------------------------------------------------------------------------
+// Widget-number styles
+// ----------------------------------------------------------------------------
+.widget-most-active-customer {
+  background-color: $background-color;
+  vertical-align: top !important;
+
+  .title {
+    font-size: 125%;
+    color: $title-color;
+    text-align: left;
+    margin-bottom: 5.5%;
+  }
+
+  .value {
+    color: $value-color;
+    font-size: 120%;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  .no_data {
+    color: $value-color;
+    font-weight: bold;
+    font-size: 320%;
+    text-align: left;
+    text-transform: none;
+  }
+}

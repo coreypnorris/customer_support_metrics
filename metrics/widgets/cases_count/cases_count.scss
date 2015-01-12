@@ -1,0 +1,35 @@
+// ----------------------------------------------------------------------------
+// Sass declarations
+// ----------------------------------------------------------------------------
+$background-color:  #000000;
+$value-color:       #FFFFFF;
+$change-rate-color: #66FF33;
+$icon-arrow-down-color: #FF0517;
+
+$title-color:       #FFFFFF;
+$moreinfo-color:    #66FF33;
+
+// ----------------------------------------------------------------------------
+// Widget-number styles
+// ----------------------------------------------------------------------------
+.widget-cases-count {
+  background-color: $background-color;
+  vertical-align: top !important;
+
+  .title {
+    font-size: 125%;
+    color: $title-color;
+    text-align: left;
+  }
+
+  .value {
+    color: $value-color;
+    font-size: 225%;
+    text-align: left;
+    text-transform: none;
+  }
+
+  .updated-at {
+    color: rgba(0, 0, 0, 0.3);
+  }
+}

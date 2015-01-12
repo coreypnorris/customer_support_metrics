@@ -1,0 +1,44 @@
+<div class="well">
+  <h4 class="header">Time range - <%= @time_range %></h4>
+  <hr>
+  <h4 class="header">Total - <%= @conversations.length.to_s %></h4>
+  <h4 class="header">Closed - <%= @conversations.where(:status => 'closed').length.to_s %></h4>
+  <h4 class="header">Active - <%= @conversations.where(:status => 'active').length.to_s %></h4>
+  <h4 class="header">Pending - <%= @conversations.where(:status => 'pending').length.to_s %></h4>
+  <h4 class="header">Spam - <%= @conversations.where(:status => 'spam').length.to_s %></h4>
+  <h4 class="header on_goal">On goal - <%= @num_on_goal.to_s %></h4>
+  <h4 class="header off_goal">Not on goal - <%= @num_off_goal.to_s %></h4>
+  <h4 class="header">Percent on goal - <%= get_percent_on_goal(@conversations).to_s %>%</h4>
+  <hr>
+  <h4 class="header">Average Response Time (during business hours) - <%= @avg_rt_business_hours %></h4>
+  <h4 class="header">Slowest Response Time (during business hours) - <%= @slowest_rt_business_hours %></h4>
+  <h4 class="header">Average Response Time (total) - <%= @avg_rt_off_hours %></h4>
+  <h4 class="header">Slowest Response Time (total) - <%= @slowest_rt_off_hours %></h4>
+  <hr>
+  <h4 class="header">Most active customer - <%= get_most_active_customer(@conversations).try(:[], :most_active_customer).try(:email) %> (<%= get_most_active_customer(@conversations).try(:[], :thread_count) %> emails)</h4>
+</div>
+
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#metrics" data-toggle="tab" aria-expanded="false">Business Hours Conversations</a></li>
+  <li class=""><a href="#off_hours" data-toggle="tab" aria-expanded="true">Off Hours Conversations</a></li>
+  <li class=""><a href="#special_cases" data-toggle="tab" aria-expanded="true">Special Cases</a></li>
+  <li class=""><a href="#all" data-toggle="tab" aria-expanded="true">All Conversations</a></li>
+</ul>
+
+<div id="myTabContent" class="tab-content">
+  <div class="tab-pane fade active in" id="business_hours">
+    <%= erb :'partials/_metrics_table', :layout => true, :locals => { :messages => @business_hours_conversations } %>
+  </div>
+
+  <div class="tab-pane fade" id="off_hours">
+    <%= erb :'partials/_metrics_table', :layout => true, :locals => { :messages => @off_hours_conversations } %>
+  </div>
+
+  <div class="tab-pane fade" id="special_cases">
+    <%= erb :'partials/_metrics_table', :layout => true, :locals => { :messages => @special_case_conversations } %>
+  </div>
+
+  <div class="tab-pane fade" id="all">
+    <%= erb :'partials/_metrics_table', :layout => true, :locals => { :messages => @conversations } %>
+  </div>
+</div>

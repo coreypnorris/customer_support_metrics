@@ -1,0 +1,36 @@
+<table class="table">
+  <thead>
+  <tr>
+    <th></th>
+    <th>Url</th>
+    <th>Created at</th>
+    <th>Time to first response</th>
+    <th>During business hours</th>
+    <th>Special Case</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% messages.each do |message| %>
+      <tr>
+        <td>
+          <%= messages.index(message) + 1 %>
+        </td>
+        <td>
+          <a href=<%= message.url %> target="_blank">Link</a>
+        </td>
+        <td>
+          <p><%= message.created_at.in_time_zone(ENV['TIME_ZONE']).strftime('%a %b %d, %Y %I:%M %P') %></p>
+        </td>
+        <td class=<%= is_on_goal(message) ? 'on_goal' : 'off_goal' %>>
+          <p><%= message.first_response_duration.to_i == 0 ? '0 seconds' : humanize_seconds(message.first_response_duration.to_i) %></p>
+        </td>
+        <td>
+          <p><%= message.during_business_hours %></p>
+        </td>
+        <td>
+          <p><%= message.special_case %></p>
+        </td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

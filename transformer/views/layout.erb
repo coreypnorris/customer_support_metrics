@@ -1,45 +1,72 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/darkly/bootstrap.min.css">
-<link rel="stylesheet" href="/assets/admin.css">
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.0/darkly/bootstrap.min.css">
 </head>
+
+<style>
+  body {
+    background-color: #222222;
+  }
+
+  .lookup_form {
+    background-color: #303030;
+    padding: 30px;
+    width: 97.5%;
+    margin-left: 15px;
+  }
+
+  .widget_controls_form {
+    padding: 30px;
+    float: left;
+  }
+
+  .range_separator {
+    float: left;
+    padding-top: 1%;
+  }
+
+  .on_goal {
+    color: #66FF33;
+  }
+  .off_goal {
+    color: #FF0517;
+  }
+</style>
+
 <body>
-
-  <div class="container">
-    <div class="navbar navbar-default">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/admin">Metrics Admin Page</a>
-      </div>
-      <div class="navbar-collapse collapse navbar-responsive-collapse">
-        <ul class="nav navbar-nav">
-          <li id="helpscout_nav"><a href="/admin/helpscout">Helpscout Conversations</a></li>
-          <li id="olark_nav"><a href="/admin/olark">Olark Chats</a></li>
-          <li id="olark_nav"><a href="/admin/register">Register Support Team Member</a></li>
-        </ul>
-
-        <ul class="nav navbar-nav navbar-right">
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboards <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a href="/cs_metrics_day" target="_blank">Previous Business Day</a></li>
-              <li><a href="/cs_metrics_week" target="_blank">Previous Week</a></li>
-              <li><a href="/cs_metrics_month" target="_blank">Previous Month</a></li>
-              <li><a href="/cs_metrics_quarter" target="_blank">Previous Quarter</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
+<div class="container">
+  <div class="navbar navbar-default">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/admin">Metrics Admin Page</a>
     </div>
-
-    <%= yield %>
+    <div class="navbar-collapse collapse navbar-responsive-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboards <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <% helpscout_metrics_day_link = "http://#{request.host}:3030/helpscout_metrics_day" %>
+            <% helpscout_metrics_week_link = "http://#{request.host}:3030/helpscout_metrics_week" %>
+            <% helpscout_metrics_month_link = "http://#{request.host}:3030/helpscout_metrics_month" %>
+            <% helpscout_metrics_quarter_link = "http://#{request.host}:3030/helpscout_metrics_quarter" %>
+            <li><a href=<%= helpscout_metrics_day_link %> target="_blank">Previous Business Day</a></li>
+            <li><a href=<%= helpscout_metrics_week_link %> target="_blank">Previous Week</a></li>
+            <li><a href=<%= helpscout_metrics_month_link %> target="_blank">Previous Month</a></li>
+            <li><a href=<%= helpscout_metrics_quarter_link %> target="_blank">Previous Quarter</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
   </div>
+
+  <%= yield %>
+</div>
 </body>
 </html>

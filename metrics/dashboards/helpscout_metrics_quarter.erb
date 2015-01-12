@@ -1,0 +1,45 @@
+<!-- <% content_for :title do %>
+cs_metrics_quarter
+<% end %> -->
+
+<div class="gridster">
+  <ul>
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="response_time_quarter" data-title="Response Time" data-view="Response_time" data-prefix=""></div>
+    </li>
+
+    <li data-row="1" data-col="2" data-sizex="1" data-sizey="1">
+      <div data-id="slowest_response_time_quarter" data-title="RT Slowest" data-view="Slowest_response_time"></div>
+    </li>
+
+    <li data-row="1" data-col="3" data-sizex="1" data-sizey="1">
+      <div data-id="percent_on_goal_quarter" data-title="RT % On Goal" data-view="Percent_on_goal"></div>
+    </li>
+
+    <li data-row="2" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="total_cases_quarter" data-title="Total Cases" data-view="Cases_count"></div>
+    </li>
+
+    <li data-row="2" data-col="2" data-sizex="1" data-sizey="1">
+      <div data-id="cases_outside_hours_quarter" data-title="Cases Outside Biz Hrs" data-view="Outside_business_hours"></div>
+    </li>
+
+    <li data-row="2" data-col="3" data-sizex="1" data-sizey="1">
+      <div data-id="active_cases" data-title="Active Cases" data-view="Cases_count"></div>
+    </li>
+
+    <li data-row="3" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="most_active_quarter" data-title="Most Active Customer" data-view="Most_active_customer"></div>
+    </li>
+</ul>
+</div>
+
+<!-- <div data-id="cs_title_quarter"  data-view="Title"></div> -->
+
+<script type='text/javascript'>
+$(function() {
+  // These settings override the defaults set in application.coffee. You can do this on a per dashboard basis.
+  Dashing.widget_base_dimensions = [415, 190]
+  Dashing.numColumns = 3
+});
+</script>

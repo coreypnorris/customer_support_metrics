@@ -1,10 +1,138 @@
 <h3>Widget Controls</h3>
-<form class="form-horizontal widget_controls_form" method="post" onsubmit="return confirm('Are you sure? This will empty all the data in the widgets.')" action="/admin/download_helpscout_data">
-  <fieldset>
-    <div class="form-group">
-      <div class="col-lg-4">
-        <button type="submit" class="btn btn-primary">Download Helpscout Data</button>
+
+<div class="row">
+  <form class="form-horizontal widget_controls_form" method="post" onsubmit="return confirm('Are you sure? This will refill all the widgets with the most up-to-date data in the database.')" action="/widgets_refill">
+    <fieldset>
+      <div class="form-group">
+        <div class="col-lg-4">
+          <button type="submit" class="btn btn-primary">Refill Widgets</button>
+        </div>
       </div>
-    </div>
-  </fieldset>
-</form>
+    </fieldset>
+  </form>
+
+  <form class="form-horizontal widget_controls_form" method="post" onsubmit="return confirm('Are you sure? This will truncate and rebuild the data in the customer support tables. This proccess can take a few hours depending on how much data you have in your Helpscout system.')" action="/rebuild_helpscout_data">
+    <fieldset>
+      <div class="form-group">
+        <div class="col-lg-4">
+          <button type="submit" class="btn btn-primary center-block">Rebuild Helpscout Data</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>
+
+<div class="row">
+  <form class="form-horizontal lookup_form" action="/lookup_conversations" method="post">
+    <fieldset>
+      <legend>Lookup past conversations</legend>
+      <div class="form-group">
+        <label for="select" class="col-lg-2 control-label">Metrics Time Ranges</label>
+        <span class="col-lg-6">
+          <select class="form-control" id="metrics_time_range" name="metrics_time_range">
+            <option value="">Select a time range</option>
+            <option value="previous_business_day">Previous business day</option>
+            <option value="previous_business_day_prior_period">Previous business day (prior period)</option>
+            <option value="previous_business_day_last_year">Previous business day (last year)</option>
+            <option value="previous_completed_week">Previous completed week</option>
+            <option value="previous_completed_week_prior_period">Previous completed week (prior period)</option>
+            <option value="previous_completed_week_last_year">Previous completed week (last year)</option>
+            <option value="previous_completed_month">Previous completed month</option>
+            <option value="previous_completed_month_prior_period">Previous completed month (prior period)</option>
+            <option value="previous_completed_month_last_year">Previous completed month (last year)</option>
+            <option value="previous_completed_quarter">Previous completed quarter</option>
+            <option value="previous_completed_quarter_prior_period">Previous completed quarter (prior period)</option>
+            <option value="previous_completed_quarter_last_year">Previous completed quarter (last year)</option>
+          </select>
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="custom_range_start custom_range_end" class="col-lg-2 control-label">Custom Time Ranges</label>
+        <span class="col-lg-3">
+          <input type="date" class="form-control" name="custom_range_start">
+        </span>
+
+        <span class="col-lg-3">
+          <input type="date" id="custom_end" class="form-control" name="custom_range_end">
+        </span>
+      </div>
+
+      <div class="form-group">
+        <div class="col-lg-10 col-lg-offset-2">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>
+
+<br>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">The Metrics</h3>
+  </div>
+  <div class="panel-body">
+    <h4>Email RT </h4>
+    Average response time for conversations during business hours.
+    <h4>Email RT Slowest </h4>
+    Largest response time for conversations during business hours.
+    <h4>Email RT % On Goal </h4>
+    Percentage of conversations that are 'on goal' during business hours.
+    <h4>Most Active Email Customer </h4>
+    Customer who has sent the most emails to support@opensesame.com
+    <h4>Email Cases </h4>
+    Number of emails sent to support@opensesame.com.
+    <h4>Active Email Cases </h4>
+    Number of conversations in the OpenSesame Support mailbox with the status 'active'.
+    <h4>Email Cases Outside Biz Hrs </h4>
+    Number of emails sent to support@opensesame.com outside business hours.
+  </div>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">How the metrics are calculated</h3>
+  </div>
+  <div class="panel-body">
+    <p>The response time is calculated by subtracting the time from when the first email in the conversation was created from the time when the first response was created.</p>
+    <p>The first response is the first email in the conversation that...</p>
+
+    <ul>
+      <li>isn't an email forward</li>
+      <li>is an actual email message (not a note, or other line item)</li>
+      <li>is created by someone with 'opensesame' in his/her email address</li>
+    </ul>
+
+    <hr>
+    <p>A conversation is 'on goal' if the response time is less that than or equal to the response target.</p>
+    <p>During business hours Monday - Friday the response target is 15 minutes.</p>
+    <p>For conversations created prior to September 15, 2014 business hours are between 7am - 5pm, going forward it's 6am - 6pm.</p>
+    <p>During business hours on weekends and holidays the response target is 3 hours.</p>
+    <p>Our holidays are...</p>
+
+    <ul>
+      <li>New Year's Eve</li>
+      <li>New Years Day</li>
+      <li>Memorial Day</li>
+      <li>4th of July</li>
+      <li>Labor Day</li>
+      <li>Thanksgiving</li>
+      <li>Day after Thanksgiving</li>
+      <li>Christmas Eve</li>
+      <li>Christmas Day</li>
+    </ul>
+
+    <hr>
+
+    <p>Conversations that are marked a 'special case' are not counted in the metrics</p>
+    <p>Conversations are marked a special case they...</p>
+    <ul>
+      <li>have no response yet</li>
+      <li>are marked as 'spam' in the Helpscout system</li>
+      <li>The conversation's creator has 'noreply', 'no-reply', 'out of office', 'automatic reply', 'spam', or 'mailer-daemon@googlemail.com' (this is to filter out failed-to-deliver emails) in their email address</li>
+      <li>were created before November 10th, 2014 and the creator has 'opensesame' in his/her email address</li>
+    </ul>
+  </div>
+</div>

@@ -14,15 +14,6 @@ Dir[File.dirname(__FILE__) + '/*.rb'].each {|file| require file }
 Dotenv.load
 
 class Webhook < Sinatra::Base
-  Logger.class_eval { alias :write :'<<' }
-
-  access_log = ::File.join(::File.dirname(::File.expand_path(__FILE__)),'..','logger','access.log')
-  access_logger = ::Logger.new(access_log)
-
-  configure do
-    use ::Rack::CommonLogger, access_logger
-  end
-
   helpers do
     def is_from_help_scout?(data, signature)
       return false if data.nil? || signature.nil?
@@ -37,10 +28,9 @@ class Webhook < Sinatra::Base
   end
 
   post '/helpscout_webhook' do
-    request.body.rewind
-
     begin
-      puts "POST request proccessing started at #{Time.now}"
+      request.body.rewind
+
       body = request.body.read
 
       if body.empty?

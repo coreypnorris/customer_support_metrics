@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150101171720) do
+ActiveRecord::Schema.define(version: 20150111203832) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20150101171720) do
   create_table "conversation_metrics", id: false, force: :cascade do |t|
     t.integer  "id",                      limit: 8
     t.string   "url"
-    t.datetime "created_at_utc"
+    t.datetime "created_at"
     t.integer  "first_response_duration", limit: 8
     t.string   "status"
     t.boolean  "during_business_hours"
@@ -82,10 +82,6 @@ ActiveRecord::Schema.define(version: 20150101171720) do
     t.string  "email"
     t.string  "phone"
     t.string  "person_type"
-  end
-
-  create_table "support_people", id: false, force: :cascade do |t|
-    t.integer "person_id", limit: 8
   end
 
   create_table "tags", force: :cascade do |t|

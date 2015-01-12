@@ -11,6 +11,8 @@ gem 'pg'
 gem 'pry'
 gem 'httparty'
 gem 'rufus-scheduler'
+gem 'week_of_month'
+gem 'thin'
 
 group :test do
   gem 'rspec'

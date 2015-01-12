@@ -1,0 +1,58 @@
+// ----------------------------------------------------------------------------
+// Sass declarations
+// ----------------------------------------------------------------------------
+$background-color:  #000000;
+$value-color:       #FFFFFF;
+$up-color: #66FF33;
+$down-color: #FF0517;
+
+$title-color:       #FFFFFF;
+$moreinfo-color:    #66FF33;
+$no-data: #0000ff;
+
+// ----------------------------------------------------------------------------
+// Widget-number styles
+// ----------------------------------------------------------------------------
+.widget-percent-on-goal {
+  background-color: $background-color;
+  vertical-align: top !important;
+
+  .title {
+    font-size: 125%;
+    color: $title-color;
+    text-align: left;
+  }
+
+  .value {
+    color: $value-color;
+    font-size: 225%;
+    text-align: left;
+    text-transform: none;
+  }
+
+  .change-rate {
+    font-size: 125%;
+    color: $value-color;
+    text-align: left;
+  }
+
+  .more-info {
+    color: $moreinfo-color;
+  }
+
+  .updated-at {
+    color: rgba(0, 0, 0, 0.3);
+  }
+
+  .icon-long-arrow-up, .diff-up{
+    color: $up-color !important;
+  }
+
+  .icon-long-arrow-down, .diff-down{
+    color: $down-color !important;
+  }
+
+  .no-data {
+    color: $no-data !important;
+  }
+}
