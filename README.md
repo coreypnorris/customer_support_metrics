@@ -1,27 +1,13 @@
-Sqs Reader
---
-Creates an Amazon SQS queue and places any data from said queue into a Amazon Dynamodb nosql table.
+# Customer Support Metrics
 
-Helpscout Webhook
---
-Listens for POST requests from Helpscout and places the data in the SQS queue.
+This project was created to download, parse, archive, and display JSON data from the popular web-based help desk app [Helpscout](http://www.helpscout.net/). The project contains three different apps: the helpscout_webhook and transformer both written in Sinatra, and metrics which is written in [Shopify's Dashing](http://www.dashing.io/).
 
-Transformer
---
-Queries the Dynamodb table and parses/archives the data into
+## Helpscout Webhook
+Listens for POST requests from Helpscout and places the data into an Amazon SQS queue.
 
+## Transformer
+Reads the data from the SQS queue, parses the JSON, stores the data in postgres, and sends the data to the Metrics dashboards via POST.
 
-Instructions
---
-1) Add credientials to .env files.
+## Metrics
+This app contains the 4 dashboards. When running it recieves data via POST from the transformer and puts it up on the dashboards.
 
-2) Start the Sqs Reader. This will create the helpscout_data SQS queue and start polling it for messages.
-
-3) Start the Helpscout Webhook.
-
-4) Start the Transformer.
-
-If you want to run the rspec tests be aware that the Helpscout Webhook app relies on elasticmq to test the queue locally. So make sure you have that installed and running on port 9324 (the default port) if you want to run the tests successfully.
-
-
-curl -H "Content-Type: application/json" -d '{"ticket":{"id":"1","number":"2"},"customer":{"id":"1","fname":"Jackie","lname":"Chan","email":"jackie.chan@somewhere.com","emails":["jackie.chan@somewhere.com"]}}' http://localhost:9999/helpscout_webhook
