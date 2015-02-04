@@ -11,11 +11,16 @@ Reads the data from the SQS queue, parses the JSON, stores the data in postgres,
 ## Metrics
 This app contains the 4 dashboards. When running it recieves data via POST from the transformer and puts it up on the dashboards.
 
-# Setup
+### Preview Image
+![alt text](https://github.com/coreypnorris/customer_support_metrics/blob/master/dashboard_week_example.png "Preview Image")
 
-* This project require 3 .env files in each of the apps. Not every enviornment variable is needed for all three apps, but for convienience you can have the save file in each app. It should look as follows:
+## Setup
 
-```ruby
+### THE .env files
+
+This project requires 3 .env files in each of the apps. Not every enviornment variable is needed for all three apps, but for convienience you can have the save file in each app. It should look as follows:
+
+```
 WEBHOOK_SECRET_KEY=your_helpscout_webhook_secret_key
 HELPSCOUT_USERNAME=your_helpscout_webhook_username
 HELPSCOUT_PASSWORD=your_helpscout_webhook_password
@@ -35,15 +40,16 @@ TIME_ZONE: Pacific Time (US & Canada)
 
 * The HELPSCOUT_SUPPORT_MAILBOX_ID is the id of the mailbox your interested in getting metrics on.
 
-* You can remove holidays from the list shown above but if you want to add additional ones you'll need to add them to the code logic.
+* You can remove holidays from the HOLIDAYS list but if you want to add additional ones you'll need to add them to the code logic.
 
 * The HELPSCOUT_GOAL variables deterimine in seconds what qualifies as an 'on-goal' conversation. Here the response time target during business hours is 15 minutes and the off business hours it's 3 hours.
 
 * The BUSINESS_HOURS_OPEN/CLOSE variables are the company's business hours measured in military time.
-
 * The WEEKDAYS_OFF are the days of the week your company takes off. 0 is Saturday and 6 is Sunday.
 
 * The TIME_ZONE is your Ruby determined timezone.
+
+## Starting the apps
 
 * After creating the .env files your ready to start the servers. Start with the webhook. Navigate to customer_support_metrics/helpscout_webhook in your terminal and start the server with the command `rackup config.ru`.
 
@@ -58,5 +64,3 @@ TIME_ZONE: Pacific Time (US & Canada)
 * Then click the Refill Widgets button. This will start a service that will automatically refresh the dashboards with the latest data every 10 minutes.
 
 * And your done with the setup! On the admin page you can click on the Dashboards dropdown in the navbar to get the links to your dashboards.
-
-
