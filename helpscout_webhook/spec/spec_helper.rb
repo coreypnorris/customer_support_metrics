@@ -9,7 +9,7 @@ ENV['RACK_ENV'] = 'test'
 
 RSpec.configure do |config|
   WebMock.disable_net_connect!(allow_localhost: true)
-
+  
   config.include Rack::Test::Methods
 
   config.expect_with :rspec do |expectations|
@@ -36,6 +36,4 @@ RSpec.configure do |config|
   config.order = :random
 
   Kernel.srand config.seed
-
-  AWS.config(:sqs_endpoint => 'localhost', :sqs_port => 9324, :use_ssl => false)
 end

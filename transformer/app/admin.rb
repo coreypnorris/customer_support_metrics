@@ -37,7 +37,7 @@ class Admin < Sinatra::Base
 
     scheduler.in '1s' do |job|
       truncate_tables
-      # transform_helpscout_mailbox_data(ENV['HELPSCOUT_SUPPORT_MAILBOX_ID'])
+      transform_helpscout_mailbox_data(ENV['HELPSCOUT_SUPPORT_MAILBOX_ID'])
       poll_helpscout_queue
     end
 

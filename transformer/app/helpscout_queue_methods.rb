@@ -6,11 +6,11 @@ def poll_helpscout_queue
     configured_aws.sqs_client.create_queue(:queue_name => 'helpscout_data')
 
     sqs = AWS::SQS.new
-    helpscout_data_queue = sqs.queues.named('helpscout_data')
+    helpscout_data_queue = sqs.queues.named('helpscout_webhook_data')
 
     helpscout_data_queue.poll do |msg|
       parsed_msg = JSON.parse(msg.body)
-
+      
       if (parsed_msg.keys.count == 1) && (parsed_msg.keys.first == 'id')
         ConversationMetric.where(:id => parsed_msg['id']).destroy_all
         ConversationTag.where(:conversation_id => parsed_msg['id']).destroy_all
@@ -27,6 +27,4 @@ def poll_helpscout_queue
     puts e.backtrace
     puts "------------------------------------------------------------------------------------------rescued poll_helpscout_queue"
   end
-
-
 end

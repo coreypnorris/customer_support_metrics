@@ -27,6 +27,17 @@ class Webhook < Sinatra::Base
     end
   end
 
+  def self.get_helpscout_data_queue
+    if ENV['RACK_ENV'] == 'test'
+      configured_aws = AWS.config(:sqs_endpoint => 'localhost', :sqs_port => 9324, :use_ssl => false)
+    else
+      configured_aws = AWS.config(access_key_id: ENV['AWS_ACCESS_KEY_ID'], secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'], region: ENV['AWS_REGION'])
+    end
+
+    sqs_client = AWS::SQS.new
+    sqs_client.queues.create('helpscout_webhook_data')
+  end
+
   post '/helpscout_webhook' do
     begin
       request.body.rewind
@@ -40,13 +51,10 @@ class Webhook < Sinatra::Base
       signature = helpscout_signature(body)
 
       if is_from_help_scout?(body, signature)
-        configured_aws = AWS.config(access_key_id: ENV['AWS_ACCESS_KEY_ID'], secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'], region: ENV['AWS_REGION'])
-        sqs_client = configured_aws.sqs_client
+        helpscout_data_queue = Webhook.get_helpscout_data_queue
+        sent_message = helpscout_data_queue.send_message(body)
+        puts "Message #{sent_message.message_id} sent to #{helpscout_data_queue.url} at #{Time.now}"
 
-        queue_url = sqs_client.get_queue_url(:queue_name => 'helpscout_data', :queue_owner_aws_account_id => ENV['AWS_ACCOUNT_NUMBER'])[:queue_url]
-        message_id = sqs_client.send_message(:queue_url => queue_url, :message_body => body)[:message_id]
-
-        puts "Message #{message_id} sent to helpscout_data SQS queue at #{Time.now}"
         return 200
       else
         return 401
